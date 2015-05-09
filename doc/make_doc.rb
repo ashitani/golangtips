@@ -24,7 +24,7 @@ go_folder="../pkg"
 fw=open(markdown_folder+"/"+"index.md","w")
 
 fw.puts <<EOF
-% 逆引きRuby
+% 逆引きGolang
 ## これはなにか
 [逆引きRuby](http://www.namaraii.com/rubytips)の内容をGolang化しつつあるものです。
 
