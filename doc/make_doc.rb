@@ -24,6 +24,7 @@ go_folder="../pkg"
 fw=open(markdown_folder+"/"+"index.md","w")
 
 fw.puts <<EOF
+% 逆引きRuby
 ## これはなにか
 [逆引きRuby](http://www.namaraii.com/rubytips)の内容をGolang化しつつあるものです。
 
@@ -124,7 +125,7 @@ for d in documents
 
 
     ## 目次
-    fw.puts "# "+name
+    fw.puts "% 逆引きGolang ("+name+")"
     fw.puts
     texts.each do |x|
         n=x[0].strip()
@@ -181,11 +182,11 @@ if File.exist?("#{template_folder}/adsense.html")
     com+=" -B #{template_folder}/adsense.html"
 end
 com+=" -A #{template_folder}/after_body.html"
-com+=" -o"
+
 
 Dir.glob(markdown_folder+"/*.md").each do |x|
     infile="#{x}"
     outfile = x.sub(/\.md/,".html")
     outfile = outfile.sub(/#{markdown_folder}/,html_folder)
-    system (com+" #{outfile} #{infile}")
+    system (com+" -o #{outfile} #{infile}")
 end
