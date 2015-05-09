@@ -56,9 +56,8 @@ which is released under the [BSD License](./LICENSE.highlightjs.txt).
 - The Go gopher was designed by [Renee French](http://reneefrench.blogspot.com/).
 The gopher vector data was made by [Takuya Ueda](http://u.hinoichi.net). 
 Licensed under the Creative Commons 3.0 Attributions license.
-EOF
-
 - The Gppher favicon was designed by [mccoyst](https://github.com/mccoyst/Gophers)
+EOF
 
 fw.close()
 
