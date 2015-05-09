@@ -122,8 +122,8 @@ for d in documents
 
     fw=open(markdown_folder+"/"+md,"w")
 
-    # fw.puts "[逆引きGolang](index.html)"
-    # fw.puts
+
+    ## 目次
     fw.puts "# "+name
     fw.puts
     texts.each do |x|
@@ -132,16 +132,34 @@ for d in documents
     end
     fw.puts
 
+    ## 各Tips
     texts.each do |x|
         code=x[1]
+
+        # コメント抽出
         comment=code.scan(/\/\*.*\*\//m)[0]
         if comment!=nil
             comment.sub!(/\/\*/,"")
             comment.sub!(/\*\//,"")
         end
+
+        # コメント削除
         code.sub!(/\/\*.*\*\/( )*\n/m,"")
+
+        # 冒頭にimport "fmt"
+        code="package \"main\"\n\nimport \"fmt\"\n"+code
+
+        #関数名をmainに置き換える
+        code.sub!(/func( )*#{x[2]}\(/,"func main(") 
+
+        # import "fmt"の次に改行がない場合は改行追加
+        code.sub!(/import "fmt"\nfunc main/,"import \"fmt\"\n\nfunc main")
+
+
+        # import文のコメントアウト
         code.gsub!(/\/\/( )*import/,"import")
 
+        # 書き出し
         fw.puts "## <a name=\"#{x[2]}\"> #{x[0].strip()}</a>"
         fw.puts comment
         fw.puts "```golang"
