@@ -147,7 +147,7 @@ for d in documents
         code.sub!(/\/\*.*\*\/( )*\n/m,"")
 
         # 冒頭にimport "fmt"
-        code="package \"main\"\n\nimport \"fmt\"\n"+code
+        code="package main\n\nimport \"fmt\"\n"+code
 
         #関数名をmainに置き換える
         code.sub!(/func( )*#{x[2]}\(/,"func main(") 

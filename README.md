@@ -55,7 +55,7 @@ func hogehoge(){ //HOGE_hogehoge()から呼ばれる関数
 基本的には各Tipsが全コピペで動作するように、
 
 ```golang
-package "main"
+package main
 
 import "fmt"
 ```
