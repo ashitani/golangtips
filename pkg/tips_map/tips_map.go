@@ -137,18 +137,18 @@ rubyのように削除エントリを戻り値に返したりブロックを返�
 */
 func map_Delete() {
 	// 消去
-	h := map[string]int{"apple": 150, "banana": 300}
-	delete(h, "banana")
+	m := map[string]int{"apple": 150, "banana": 300}
+	delete(m, "banana")
 
 	// 存在しないときはエラーを表示
 	f := func(k string) {
 		fmt.Printf("%s not found\n", k)
 	}
-	delete_if_exist(h, "banana", f) // => "banana not found"
-	fmt.Println(h)                  // => "map[apple:150]"
+	delete_if_exist(m, "banana", f) // => "banana not found"
+	fmt.Println(m)                  // => "map[apple:150]"
 
 	// 200より小さい値を持つエントリを削除
-	m := map[string]int{"apple": 150, "banana": 300, "lemon": 400}
+	m = map[string]int{"apple": 150, "banana": 300, "lemon": 400}
 	f_small := func(m map[string]int, k string) bool {
 		return (m[k] < 200)
 	}
@@ -189,14 +189,76 @@ func delete_if(
 //マップの全エントリに対してブロックを実行する
 //---------------------------------------------------
 /*
- */
-func map_Block() {
+```
+for key,value= range m{
+}
+```
+でkey,valueを取り出しつつエントリを走査できます。
+*/
 
+func map_Block() {
+	m := map[string]int{"apple": 150, "banana": 300, "lemon": 300}
+
+	sum := 0
+	fruits := []string{}
+	for k, v := range m {
+		fruits = append(fruits, k)
+		sum += v
+	}
+	fmt.Println(fruits) // => "[apple banana lemon]"
+	fmt.Println(sum)    // => "750"
 }
 
 //---------------------------------------------------
 //マップを配列に変換する
 //---------------------------------------------------
+/*
+rubyのkeys(), values(), to_a(), indexes() はすべて
+range()で実装できます。
+*/
+func map_ToArray() {
+	m := map[string]int{"apple": 150, "banana": 300, "lemon": 300}
+	fmt.Println(keys(m))   // => "[apple banana lemon]"
+	fmt.Println(values(m)) // => "[150 300 300]"
+	fmt.Println(to_a(m))   // => "[[lemon 300] [apple 150] [banana 300]]"
+
+	keys := []string{"apple", "lemon"}
+	fmt.Println(indexes(m, keys)) // => "[150 300]"
+
+}
+
+func keys(m map[string]int) []string {
+	ks := []string{}
+	for k, _ := range m {
+		ks = append(ks, k)
+	}
+	return ks
+}
+
+func values(m map[string]int) []int {
+	vs := []int{}
+	for _, v := range m {
+		vs = append(vs, v)
+	}
+	return vs
+}
+
+func to_a(m map[string]int) []interface{} {
+	a := []interface{}{}
+	for k, v := range m {
+		a = append(a, []interface{}{k, v})
+	}
+	return a
+}
+
+func indexes(m map[string]int, keys []string) []int {
+	vs := []int{}
+	for _, k := range keys {
+		vs = append(vs, m[k])
+	}
+	return vs
+}
+
 //---------------------------------------------------
 //マップを空にする
 //---------------------------------------------------
@@ -223,7 +285,7 @@ func main() {
 	map_Default() //キーが存在しない場合のデフォルト値を設定する
 	map_Delete()  //マップからエントリを削除する
 	map_Block()   //マップの全エントリに対してブロックを実行する
-	//マップを配列に変換する
+	map_ToArray() //マップを配列に変換する
 	//マップを空にする
 	//マップを値で降順、値が等しい場合キーで昇順にソートする
 	//マップの要素をランダムに抽出する
