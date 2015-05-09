@@ -12,6 +12,7 @@ documents=[
     ["tips_time","日付と時刻"],
     ["tips_num","数値"],
     ["tips_slice","配列"],
+    ["tips_map","マップ"],
 ]
 
 markdown_folder = "markdown"

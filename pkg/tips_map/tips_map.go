@@ -2,11 +2,13 @@
 マップ(ハッシュ)
 */
 
-//package tips_map
-package main
+package tips_map
 
 import (
 	"fmt"
+	"math/rand"
+	"sort"
+	"time"
 )
 
 //---------------------------------------------------
@@ -178,7 +180,6 @@ func delete_if(
 	for k := range m {
 		ok := func_if(m, k)
 		if ok {
-			//			v := m[k]
 			delete(m, k)
 		} else {
 		}
@@ -262,33 +263,137 @@ func indexes(m map[string]int, keys []string) []int {
 //---------------------------------------------------
 //マップを空にする
 //---------------------------------------------------
+/*
+再初期化するのが早そうです。
+m=nilでも一見クリアできるのですが、再代入できなくなります。
+*/
+func map_Clear() {
+	m := map[string]int{"apple": 150, "banana": 300, "lemon": 300}
+	m = make(map[string]int)
+	fmt.Println(m)
+}
+
 //---------------------------------------------------
 //マップを値で降順、値が等しい場合キーで昇順にソートする
 //---------------------------------------------------
+/*
+[条件式を指定したソート](http://ashitani.jp/golangtips/tips_slice.html#slice_Sort)
+と同様のことを行います。
+*/
+// import "sort"
+func map_Sort() {
+	m := map[string]int{"ada": 1, "hoge": 4, "basha": 3, "poeni": 3}
+
+	a := List{}
+	for k, v := range m {
+		e := Entry{k, v}
+		a = append(a, e)
+	}
+
+	sort.Sort(a)
+	fmt.Println(a)
+}
+
+type Entry struct {
+	name  string
+	value int
+}
+type List []Entry
+
+func (l List) Len() int {
+	return len(l)
+}
+
+func (l List) Swap(i, j int) {
+	l[i], l[j] = l[j], l[i]
+}
+
+func (l List) Less(i, j int) bool {
+	if l[i].value == l[j].value {
+		return (l[i].name < l[j].name)
+	} else {
+		return (l[i].value < l[j].value)
+	}
+}
+
 //---------------------------------------------------
 //マップの要素をランダムに抽出する
 //---------------------------------------------------
+/*
+うーん、range()に頼りますか。
+
+乱数は[擬似乱数を生成する](http://ashitani.jp/golangtips/tips_num.html#num_Rand)
+にあります。
+*/
+// import "math/rand"
+// import "time"
+func map_Random() {
+	m := map[string]int{"apple": 150, "banana": 300, "lemon": 300}
+
+	rand.Seed(time.Now().UnixNano()) //Seed
+
+	fmt.Println(choice(m))
+	fmt.Println(choice(m))
+	fmt.Println(choice(m))
+	fmt.Println(choice(m))
+
+}
+
+func choice(m map[string]int) string {
+	l := len(m)
+	i := 0
+
+	index := rand.Intn(l)
+
+	ans := ""
+	for k, _ := range m {
+		if index == i {
+			ans = k
+			break
+		} else {
+			i++
+		}
+	}
+	return ans
+}
+
 //---------------------------------------------------
 //複数のマップをマージする
 //---------------------------------------------------
+func map_Merge() {
+	m1 := map[string]string{"key1": "val1", "key2": "val2"}
+	m2 := map[string]string{"key3": "val3"}
+
+	fmt.Println(merge(m1, m2)) // => "map[val1:key1 val2:key2 val3:key3]"
+}
+
+func merge(m1, m2 map[string]string) map[string]string {
+	ans := map[string]string{}
+
+	for v, k := range m1 {
+		ans[k] = v
+	}
+	for v, k := range m2 {
+		ans[k] = v
+	}
+	return (ans)
+}
 
 //---------------------------------------------------
-// マップ(マップ)
+// マップ(ハッシュ)
 //---------------------------------------------------
-//func Tips_map() {
-func main() {
+func Tips_map() {
 	map_Map()     // プログラム中でマップを定義する
 	map_Get()     // キーに関連付けられた値を取得する
 	map_Add()     // マップに要素を追加する
 	map_HasKey()  // マップ内にキーが存在するかどうか調べる
 	map_Length()  // マップの要素数を取得する
-	map_Default() //キーが存在しない場合のデフォルト値を設定する
-	map_Delete()  //マップからエントリを削除する
-	map_Block()   //マップの全エントリに対してブロックを実行する
-	map_ToArray() //マップを配列に変換する
-	//マップを空にする
-	//マップを値で降順、値が等しい場合キーで昇順にソートする
-	//マップの要素をランダムに抽出する
-	//複数のマップをマージする
-
+	map_Default() // キーが存在しない場合のデフォルト値を設定する
+	map_Delete()  // マップからエントリを削除する
+	map_Block()   // マップの全エントリに対してブロックを実行する
+	map_ToArray() // マップを配列に変換する
+	map_Clear()   // マップを空にする
+	map_Sort()    // マップを値で降順、値が等しい場合キーで昇順にソートする
+	map_Random()  // マップの要素をランダムに抽出する
+	map_Merge()   // 複数のマップをマージする
 }
