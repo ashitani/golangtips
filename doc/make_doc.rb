@@ -58,6 +58,8 @@ The gopher vector data was made by [Takuya Ueda](http://u.hinoichi.net).
 Licensed under the Creative Commons 3.0 Attributions license.
 EOF
 
+- The Gppher favicon was designed by [mccoyst](https://github.com/mccoyst/Gophers)
+
 fw.close()
 
 ## 各ページデータ抽出-----------------------------------
