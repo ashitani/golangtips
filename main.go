@@ -9,6 +9,7 @@
 package main
 
 import (
+	. "./pkg/tips_map"
 	. "./pkg/tips_num"
 	. "./pkg/tips_slice"
 	. "./pkg/tips_string"
@@ -20,4 +21,5 @@ func main() {
 	Tips_num()
 	Tips_time()
 	Tips_slice()
+	Tips_map()
 }
