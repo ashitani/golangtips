@@ -1,7 +1,7 @@
-./golangtips
-./pkg/tips_map/tips_map
-./EUC.txt
-./template/adsense.html
-./doc/publish.rb
-./doc/html/*.html
-./doc/markdown/*.md
+/golangtips
+/pkg/tips_map/tips_map
+/EUC.txt
+/doc/template/adsense.html
+/doc/publish.rb
+/doc/html/*.html
+/doc/markdown/*.md
