@@ -13,6 +13,7 @@ documents=[
     ["tips_num","数値"],
     ["tips_slice","配列"],
     ["tips_map","マップ"],
+    ["tips_regexp","正規表現"],
 ]
 
 markdown_folder = "markdown"

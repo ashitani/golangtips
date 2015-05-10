@@ -11,6 +11,7 @@ package main
 import (
 	. "./pkg/tips_map"
 	. "./pkg/tips_num"
+	. "./pkg/tips_regexp"
 	. "./pkg/tips_slice"
 	. "./pkg/tips_string"
 	. "./pkg/tips_time"
@@ -22,4 +23,5 @@ func main() {
 	Tips_time()
 	Tips_slice()
 	Tips_map()
+	Tips_regexp()
 }
