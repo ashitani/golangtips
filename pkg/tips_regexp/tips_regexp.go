@@ -39,9 +39,9 @@ func regexp_Regexp() {
 バッククォーテーション(\`)を使うので注意。シングルクオーテーションはrune(UTF8文字）を表す表記です。
 たとえば、数値マッチさせる場合には
 ```
-	r = regexp.MustCompile('\d')    // OK
 	r = regexp.MustCompile("\\d")   // OK
-	r = regexp.MustCompile(`\d`)    // NG
+	r = regexp.MustCompile(`\d`)    // OK
+	r = regexp.MustCompile('\d')    // NG
 ```
 のような表記を使います。基本はバッククォーテーションということでよいでしょう。
 */
