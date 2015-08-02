@@ -14,6 +14,7 @@ documents=[
     ["tips_slice","配列"],
     ["tips_map","マップ"],
     ["tips_regexp","正規表現"],
+    ["tips_file","ファイル"],
 ]
 
 markdown_folder = "markdown"

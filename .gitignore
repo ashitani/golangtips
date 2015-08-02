@@ -1,5 +1,8 @@
 /golangtips
 /pkg/tips_map/tips_map
+/pkg/tips_file/tips_file
+/pkg/tips_file/stat.rb
+/pkg/tips_file/test.bak
 /EUC.txt
 /doc/template/adsense.html
 /doc/publish.rb

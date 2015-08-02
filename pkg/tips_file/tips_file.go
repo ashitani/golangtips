@@ -28,7 +28,6 @@ import (
 テキストの読み書きはいろいろ方法があると思いますが、ここでは
 読み出しに`bufio.NewScanner()`を、書き込みに`bufio.NewWriter()`を使います。
 */
-
 // import "os"
 // import "bufio"
 
@@ -84,9 +83,9 @@ func file_Read() {
 []byteバッファを作ってRead()に渡すと、バッファの長さ分だけ
 読み込んでくれます。
 */
+// import "os"
 
 func file_ReadLength() {
-
 	fp, err := os.Open("test.txt")
 	if err != nil {
 		panic(err)
@@ -107,10 +106,9 @@ func file_ReadLength() {
 /*
 io/ioutilのioutil.ReadFile()を使います。
 */
-
 // import  "io/ioutil"
-func file_ReadAll() {
 
+func file_ReadAll() {
 	data, err := ioutil.ReadFile("test.txt")
 	if err != nil {
 		panic(err)
@@ -124,10 +122,11 @@ func file_ReadAll() {
 /*
 bufioのScannerをつかってみます。この例では、foo.csvから行数と総エントリ数をカウントします。
 */
-
+// import "bufio"
+// import "os"
 // import "strings"
-func file_ReadEachLine() {
 
+func file_ReadEachLine() {
 	data, err := readAll("foo.csv")
 	if err != nil {
 		panic(err)
@@ -136,7 +135,6 @@ func file_ReadEachLine() {
 }
 
 func readAll(filename string) (string, error) {
-
 	fp, err := os.Open(filename)
 	if err != nil {
 		return "", fmt.Errorf(filename + " can't be opened")
@@ -162,8 +160,12 @@ func readAll(filename string) (string, error) {
 //---------------------------------------------------
 // テキストファイルの特定の行を読み込む
 //---------------------------------------------------
-// rubyのreadlinesのように、配列に読み込むような標準関数はありません。
-// まあでも改行でSplitすればよいかしら？
+/*
+rubyのreadlinesのように、配列に読み込むような標準関数はありません。
+改行でSplitすれば代替になりますが、でかいファイルの場合は気をつけないとですね。
+*/
+// import "ioutil"
+// import "strings"
 
 func file_ReadSpecificLine() {
 	ans, err := readLines("foo.csv")
@@ -195,6 +197,9 @@ osごとのデフォルトのディレクトリが使われるようです。pre
 
 下記の例は、test.txtの内容を、TempFileを利用して大文字に変換します。
 */
+// import "bufio"
+// import "ioutil"
+// import "os"
 
 func file_TempFile() {
 
@@ -317,6 +322,7 @@ func (r records) Less(i, j int) bool {
 os.Link()が簡単でしょう。
 */
 // import "os"
+
 func file_CopyFile() {
 	src := "test.txt"
 	dest := "test.bak"
@@ -389,7 +395,6 @@ func file_FileType() {
 
 	fmt.Println(isExist("/etc/passwd"))   // => true
 	fmt.Println(isExist("/etc/password")) // => false
-
 }
 
 func isDir(filename string) bool {
@@ -414,6 +419,7 @@ func isExist(filename string) bool {
 少なくともGo1.4ではsyscallにいます。Atimespec->AtimになったのはGo1.5から？
 */
 // import "syscall"
+
 func file_Stat() {
 	var s syscall.Stat_t
 	syscall.Stat("/etc/passwd", &s)
@@ -429,7 +435,6 @@ func file_Stat() {
 	// fmt.Println(s.Mtim.Unix()) // Go1.4ではエラー
 	fmt.Println(s.Atimespec.Unix())
 	fmt.Println(s.Mtimespec.Unix())
-
 }
 
 //---------------------------------------------------
@@ -441,6 +446,7 @@ Printlnすると"-rw-rw-rw-"のような表示が出ます。便利なのか？�
 8進数を誤解しやすいからかしら。
 */
 // import "os"
+
 func file_ChMod() {
 	filename := "test.txt"
 
@@ -451,7 +457,6 @@ func file_ChMod() {
 
 	s, _ = os.Stat(filename)
 	fmt.Println(s.Mode()) // -> "-rw-rw-rw-"
-
 }
 
 //---------------------------------------------------
@@ -467,8 +472,8 @@ dscl . -read /users/$username uid
 ```
 などの方法があります。
 */
-
 //import "os"
+
 func file_ChOwn() {
 	err := os.Chown("test.txt", 502, 20) //uid=502,gid=20
 	if err != nil {
@@ -484,8 +489,8 @@ func file_ChOwn() {
 最終アクセス日を2001-5-22 23:59:59(JST)、
 最終更新日を2001-5-1 00:00:00(JST)に変更するものです。
 */
-// import "time"
 // import "syscall"
+// import "time"
 
 func file_ChangeTime() {
 
@@ -514,8 +519,8 @@ func file_ChangeTime() {
 
 絶対パスを、ベースパスを基準に相対パスに変換するにはRel()を使います。
 */
-
 // import "path/filepath"
+
 func file_AbsPath() {
 	apath, _ := filepath.Abs("./test.txt")
 	fmt.Println(apath)
@@ -544,7 +549,6 @@ func file_Dir() {
 	fmt.Println(d) // =>"/hoge/piyo"
 	d = filepath.Dir("c:\\hoge\\piyo")
 	fmt.Println(d) // =>"."  ？？
-
 }
 
 //---------------------------------------------------
@@ -554,7 +558,6 @@ func file_Dir() {
 path/filepath のBase()でファイル名を分離できます。
 拡張子を取り出すのはExt()ですが、拡張子を取り除いたbasenameを
 取る方法は簡単にはなさそうですので、正規表現で拡張子を取り除いてからBase()を実行しました。
-
 */
 // import "path/filepath"
 // import "regexp"
@@ -569,7 +572,6 @@ func file_Basename() {
 	rep := regexp.MustCompile(`.c$`)
 	e = filepath.Base(rep.ReplaceAllString("/hoge/piyo.c", ""))
 	fmt.Println(e) // => "piyo"
-
 }
 
 //---------------------------------------------------
