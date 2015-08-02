@@ -94,12 +94,13 @@ func appleGoroutine(fruit string, a int, quit chan bool) {
 // goroutineの実行を終了させる
 //---------------------------------------------------
 /*
-スレッドと違って外部から終了させることは出来ません。
+スレッドと違ってgoroutineは外部から終了させることは出来ません。
 チャネルをつかって無限ループを抜けるようにするのが一案です。
 
-"."を入力してenterを押すとスレッドを終了します。
+"."と入力してenterを押すとスレッドを終了します。
 */
 // import "os"
+
 func goroutine_Kill() {
 	kill := make(chan bool)
 	go killableGoroutine(kill)
@@ -131,6 +132,41 @@ func killableGoroutine(kill chan bool) {
 //---------------------------------------------------
 // goroutineを停止する
 //---------------------------------------------------
+/*
+スレッドと違ってgoroutineは外部から停止させることはできません。
+ループ内でチャネルの入力を監視して処理を切り替えることは可能です。
+この例では、3秒後に停止シグナルを入れて、
+*/
+
+func goroutine_Stop() {
+	stop_start := make(chan bool)
+	finished := make(chan bool)
+	go stoppableGoroutine(stop_start, finished)
+	var input string
+
+	time.Sleep(3 * time.Second)
+	stop_start <- true
+	fmt.Scanln(&input)
+	stop_start <- true
+	<-finished
+}
+func stoppableGoroutine(stop_start, finished chan bool) {
+	fmt.Println("Start goroutine")
+	for i := 0; i < 50; i++ {
+		select {
+		case <-stop_start:
+			fmt.Println("Stopped. Hit enter to restart.")
+			<-stop_start
+			break
+		default:
+			fmt.Print(".")
+			time.Sleep(100 * time.Millisecond)
+		}
+	}
+	fmt.Println()
+	fmt.Println("End goroutine")
+	finished <- true
+}
 
 //---------------------------------------------------
 // 実行中のgoroutine一覧を取得する
@@ -151,8 +187,8 @@ func main() {
 	//goroutine_Create() // goroutineを生成する
 	//goroutine_Argument() // goroutineに引数を渡す
 	// // goroutineの終了を待つ
-	goroutine_Kill() // goroutineの実行を終了させる
-	// goroutineを停止する
+	//goroutine_Kill() // goroutineの実行を終了させる
+	goroutine_Stop() // goroutineを停止する
 	// 実行中のgoroutine一覧を取得する
 	// goroutine間で通信する
 	// goroutine間の競合を回避する(Mutex)
