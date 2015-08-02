@@ -15,6 +15,7 @@ documents=[
     ["tips_map","マップ"],
     ["tips_regexp","正規表現"],
     ["tips_file","ファイル"],
+    ["tips_dir","ディレクトリ"],
 ]
 
 markdown_folder = "markdown"
@@ -138,6 +139,7 @@ for d in documents
     fw.puts
 
     ## 各Tips
+
     texts.each do |x|
         code=x[1]
 
@@ -151,25 +153,36 @@ for d in documents
         # コメント削除
         code.sub!(/\/\*.*\*\/( )*\n/m,"")
 
-        # 冒頭にimport "fmt"
-        code="package main\n\nimport \"fmt\"\n"+code
+        # コードがない場合はスキップ
+        if code.gsub(/\n/,"")==""
+            skip=true
+        else
+            skip=false
+        end
 
-        #関数名をmainに置き換える
-        code.sub!(/func( )*#{x[2]}\(/,"func main(") 
+        if skip==false
+            # 冒頭にimport "fmt"
+            code="package main\n\nimport \"fmt\"\n"+code
 
-        # import "fmt"の次に改行がない場合は改行追加
-        code.sub!(/import "fmt"\nfunc main/,"import \"fmt\"\n\nfunc main")
+            #関数名をmainに置き換える
+            code.sub!(/func( )*#{x[2]}\(/,"func main(") 
 
+            # import "fmt"の次に改行がない場合は改行追加
+            code.sub!(/import "fmt"\nfunc main/,"import \"fmt\"\n\nfunc main")
 
-        # import文のコメントアウト
-        code.gsub!(/\/\/( )*import/,"import")
+            # import文のコメントアウト
+            code.gsub!(/\/\/( )*import/,"import")
+
+        end
 
         # 書き出し
         fw.puts "## <a name=\"#{x[2]}\"> #{x[0].strip()}</a>"
         fw.puts comment
-        fw.puts "```golang"
-        fw.puts code
-        fw.puts "```"
+        if skip==false
+            fw.puts "```golang"
+            fw.puts code
+            fw.puts "```"
+        end
         fw.puts 
     end
 

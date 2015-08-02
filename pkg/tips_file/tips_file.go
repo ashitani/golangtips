@@ -2,8 +2,7 @@
 ファイル
 */
 
-//package tips_file
-package main
+package tips_file
 
 import (
 	"bufio"
