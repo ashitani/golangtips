@@ -3,6 +3,7 @@
 */
 
 //package main
+package tips_dir
 
 import (
 	"fmt"
