@@ -557,7 +557,8 @@ func delete(slice []int, i int) (int, []int, error) {
 //一致する要素を全て取り除く
 //---------------------------------------------------
 /*
-うーん、もうちょっとスッキリ書けると思いますが。。
+[こちら](http://ymotongpoo.hatenablog.com/entry/2015/05/20/143004)でご指摘頂きました。ありがとうございます。
+
 */
 func slice_DeleteAll() {
 	a := []string{"apple", "orange", "lemon", "apple", "vine"}
@@ -574,30 +575,18 @@ func slice_DeleteAll() {
 }
 
 func delete_strings(slice []string, s string) (string, []string, error) {
-
-	indexes := []int{}
-	for j, x := range slice {
-		if x == s {
-			indexes = append(indexes, j)
+	ret := make([]string, len(slice))
+	i := 0
+	for _, x := range slice {
+		if s != x {
+			ret[i] = x
+			i++
 		}
 	}
-
-	if len(indexes) == 0 {
+	if len(ret[:i]) == len(slice) {
 		return "", slice, fmt.Errorf("Couldn't find")
 	}
-
-	ret := slice[indexes[0]]
-
-	ans := make([]string, len(slice))
-	copy(ans, slice)
-
-	// 後ろから消していく
-	sort.Sort(sort.Reverse(sort.IntSlice(indexes)))
-	for _, i := range indexes {
-		ans = append(ans[:i], ans[(i+1):]...)
-	}
-
-	return ret, ans, nil
+	return s, ret[:i], nil
 }
 
 //---------------------------------------------------

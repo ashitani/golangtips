@@ -16,6 +16,7 @@ documents=[
     ["tips_regexp","正規表現"],
     ["tips_file","ファイル"],
     ["tips_dir","ディレクトリ"],
+    ["tips_goroutine","goroutine"]
 ]
 
 markdown_folder = "markdown"
@@ -38,6 +39,9 @@ Go 1.4.1 で確認しています。Golangは仕様変更が激しいので、�
 
 なお、ソースコードは[Githubに置いてあります](https://github.com/ashitani/golangtips)ので、
 何かあればPull Requestでお知らせください。
+
+なお、当初から予定していたファイル系とgoroutineまでなんとか書き上げたので、
+ここでいったん更新を終了します(2015/08/12)。
 
 ## 目次
 EOF
@@ -164,7 +168,7 @@ for d in documents
             # 冒頭にimport "fmt"
             code="package main\n\nimport \"fmt\"\n"+code
 
-            #関数名をmainに置き換える
+            #最初の関数名をmainに置き換える
             code.sub!(/func( )*#{x[2]}\(/,"func main(") 
 
             # import "fmt"の次に改行がない場合は改行追加

@@ -3,8 +3,10 @@
 /pkg/tips_file/tips_file
 /pkg/tips_file/stat.rb
 /pkg/tips_file/test.bak
+/pkg/tips_goroutine/count.txt
 /EUC.txt
 /doc/template/adsense.html
 /doc/publish.rb
 /doc/html/*.html
 /doc/markdown/*.md
+/test/

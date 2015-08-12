@@ -26,6 +26,18 @@ import (
 
 テキストの読み書きはいろいろ方法があると思いますが、ここでは
 読み出しに`bufio.NewScanner()`を、書き込みに`bufio.NewWriter()`を使います。
+
+下記のようにWriteFile/ReadFileを使うと、一行で読み書きができます。ただし
+引数はstringではなくbyte[]です。
+```
+// Write
+ioutil.WriteFile(filename, []byte(s), os.ModePerm)
+
+// Read
+b, err := ioutil.ReadFile(filename)
+s=string(b)
+```
+
 */
 // import "os"
 // import "bufio"

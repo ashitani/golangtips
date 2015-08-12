@@ -239,12 +239,22 @@ func string_ParseOct() {
 //---------------------------------------------------
 // 16進文字列を整数に変換する
 //---------------------------------------------------
+/*
+[こちら](http://ymotongpoo.hatenablog.com/entry/2015/05/20/143004)のご指摘どおり、
+baseを0にすると0xを入れてもいいそうです。
+*/
+
 //import "strconv"
 
 func string_ParseHex() {
 	s := "ff" // 0xは含んではいけません。
 	sh, _ := strconv.ParseInt(s, 16, 64)
 	fmt.Println(sh)
+
+	s = "0xff" // 0xを含んでも良い
+	sh, _ = strconv.ParseInt(s, 0, 64)
+	fmt.Println(sh)
+
 }
 
 //---------------------------------------------------
@@ -435,6 +445,9 @@ func string_FindAll() {
 /*
 下記はEUCの例です。
 指定するコーディングは、EUCJP,ISO2022JP,ShiftJISのどれかです。
+
+[こちら](http://ymotongpoo.hatenablog.com/entry/2015/05/20/143004)でご指摘いただいた点を
+修正しました。'EUCJP'は'japanese.EUCJP'と呼びます。
 */
 //import "golang.org/x/text/encoding/japanese"
 //import "golang.org/x/text/transform"
@@ -444,39 +457,39 @@ func string_FindAll() {
 //import "bytes"
 
 func string_Kconv() {
-	string_Kconv_fwrite()      // ファイル書き込み
-	string_Kconv_fread()       // ファイル読み出し
-	string_Kconv_to_buffer()   // バッファに書き込み
-	string_Kconv_from_buffer() // バッファから読み出し
+	KconvFwrite()     // ファイル書き込み
+	KconvFread()      // ファイル読み出し
+	KconvToBuffer()   // バッファに書き込み
+	KconvFromBuffer() // バッファから読み出し
 }
 
 // ファイル書き込み
-func string_Kconv_fwrite() {
+func KconvFwrite() {
 	s := "漢字です" // UTF8
 	f, _ := os.Create("EUC.txt")
 	r := strings.NewReader(s)
-	w := transform.NewWriter(f, EUCJP.NewEncoder()) // Encoder->f
-	io.Copy(w, r)                                   // r -> w(->Encoder->f)
+	w := transform.NewWriter(f, japanese.EUCJP.NewEncoder()) // Encoder->f
+	io.Copy(w, r)                                            // r -> w(->Encoder->f)
 	f.Close()
 }
 
 // ファイル読み出し
-func string_Kconv_fread() {
+func KconvFread() {
 	f, _ := os.Open("EUC.txt")
 	b := new(bytes.Buffer)
-	r := transform.NewReader(f, EUCJP.NewDecoder()) // f -> Decoder
-	io.Copy(b, r)                                   // (f->Decoder)->b
+	r := transform.NewReader(f, japanese.EUCJP.NewDecoder()) // f -> Decoder
+	io.Copy(b, r)                                            // (f->Decoder)->b
 	fmt.Println(b.String())
 	f.Close()
 }
 
 // バッファに書き込み
-func string_Kconv_to_buffer() {
+func KconvToBuffer() {
 	s := "漢字です" // UTF8
 	b := new(bytes.Buffer)
 	r := strings.NewReader(s)
-	w := transform.NewWriter(b, EUCJP.NewEncoder()) // Encoder->f
-	io.Copy(w, r)                                   // r -> w(->Encoder->f)
+	w := transform.NewWriter(b, japanese.EUCJP.NewEncoder()) // Encoder->f
+	io.Copy(w, r)                                            // r -> w(->Encoder->f)
 
 	st := b.String()
 	for i := 0; i < len(st); i++ {
@@ -487,14 +500,14 @@ func string_Kconv_to_buffer() {
 }
 
 // バッファから読み出し
-func string_Kconv_from_buffer() {
+func KconvFromBuffer() {
 	str_bytes := []byte{180, 193, 187, 250, 164, 199, 164, 185}
 	s := bytes.NewBuffer(str_bytes).String() // "漢字です" in EUC
 
 	sr := strings.NewReader(s)
 	b := new(bytes.Buffer)
-	r := transform.NewReader(sr, EUCJP.NewDecoder()) // sr -> Decoder
-	io.Copy(b, r)                                    // (sr->Decoder)->b
+	r := transform.NewReader(sr, japanese.EUCJP.NewDecoder()) // sr -> Decoder
+	io.Copy(b, r)                                             // (sr->Decoder)->b
 	fmt.Println(b.String())
 }
 
