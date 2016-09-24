@@ -370,10 +370,10 @@ func map_Merge() {
 func merge(m1, m2 map[string]string) map[string]string {
 	ans := map[string]string{}
 
-	for v, k := range m1 {
+	for k, v := range m1 {
 		ans[k] = v
 	}
-	for v, k := range m2 {
+	for k, v := range m2 {
 		ans[k] = v
 	}
 	return (ans)
