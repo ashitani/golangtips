@@ -191,7 +191,7 @@ func delete_if(
 //---------------------------------------------------
 /*
 ```
-for key,value= range m{
+for key, value := range m {
 }
 ```
 でkey,valueを取り出しつつエントリを走査できます。
